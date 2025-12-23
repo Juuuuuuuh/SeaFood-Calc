@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내수시장(요리사)</title>
+  <style>
+    body { font-family: 'Pretendard', sans-serif; background-color: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
+    .container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); width: 100%; max-width: 850px; }
+    h2 { text-align: center; color: #222; margin-bottom: 30px; }
+
+    .seller-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+    @media (max-width: 768px) { .seller-grid { grid-template-columns: 1fr; } }
+
+    .seller-card { background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; }
+    .seller-name { font-size: 18px; font-weight: bold; color: #007bff; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #007bff; padding-bottom: 5px; }
+
+    .item-row { display: flex; align-items: center; margin-bottom: 10px; }
+    .item-row label { flex: 2.5; font-size: 13px; color: #555; font-weight: 500; }
+    .item-row input { flex: 1; width: 60px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; text-align: right; }
+
+    .item-row input:focus { outline: none; border-color: #007bff; box-shadow: 0 0 5px rgba(0,123,255,0.2); }
+
+    .controls { text-align: center; margin-top: 20px; }
+    button { padding: 15px 50px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    button:hover { background-color: #218838; }
+
+    #final-report { margin-top: 30px; padding: 20px; background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; display: none; }
+    .report-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #333; }
+    .report-line span { color: #d9534f; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>내수시장(요리사)</h2>
+
+  <div class="seller-grid">
+    <div class="seller-card" id="card_rivet">
+      <div class="seller-name">용왕</div>
+      <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0" min="0"></div>
+      <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
+      <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0" min="0"></div>
+    </div>
+
+    <div class="seller-card" id="card_junho">
+      <div class="seller-name">공쥬</div>
+      <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0" min="0"></div>
+      <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
+      <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0" min="0"></div>
+    </div>
+
+    <div class="seller-card" id="card_jiru">
+      <div class="seller-name">지루해</div>
+      <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0" min="0"></div>
+      <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
+      <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0" min="0"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button onclick="calculateAll()">Submit</button>
+  </div>
+
+  <div id="final-report">
+    <div class="report-line">용왕 : <span id="res_rivet">0</span>원</div>
+    <div class="report-line">공쥬 : <span id="res_junho">0</span>원</div>
+    <div class="report-line">지루해 : <span id="res_jiru">0</span>원</div>
+  </div>
+</div>
+
+<script>
+  const prices = { miyeok: 12600, jeonbok: 19800, honghap: 31500 };
+
+  function getSellerTotal(cardId) {
+    const card = document.getElementById(cardId);
+    const m = parseInt(card.querySelector('.miyeok').value) || 0;
+    const j = parseInt(card.querySelector('.jeonbok').value) || 0;
+    const h = parseInt(card.querySelector('.honghap').value) || 0;
+
+    return (m * prices.miyeok) + (j * prices.jeonbok) + (h * prices.honghap);
+  }
+
+  function calculateAll() {
+    const totalRivet = getSellerTotal('card_rivet');
+    const totalJunho = getSellerTotal('card_junho');
+    const totalJiru = getSellerTotal('card_jiru');
+
+    document.getElementById('res_rivet').innerText = totalRivet.toLocaleString();
+    document.getElementById('res_junho').innerText = totalJunho.toLocaleString();
+    document.getElementById('res_jiru').innerText = totalJiru.toLocaleString();
+
+    document.getElementById('final-report').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
