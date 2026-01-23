@@ -19,9 +19,21 @@
         .controls { text-align: center; margin-top: 20px; }
         button { padding: 15px 50px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         button:hover { background-color: #218838; }
-        #final-report { margin-top: 30px; padding: 20px; background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; display: none; }
-        .report-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #333; }
-        .report-line span { color: #d9534f; }
+        #final-report { margin-top: 30px; padding: 20px; background: #222; border: 2px solid #444; border-radius: 10px; display: none; }
+        .report-line { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 12px; 
+            font-size: 16px; 
+            font-family: 'Courier New', monospace; 
+            color: #00ff00; 
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .report-line:hover { background: #444; }
+        .copy-hint { color: #888; font-size: 12px; text-align: center; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -68,10 +80,11 @@
     </div>
 
     <div id="final-report">
-        <div class="report-line">용왕 : <span id="res_rivet">0</span>원</div>
-        <div class="report-line">공쥬 : <span id="res_junho">0</span>원</div>
-        <div class="report-line">지루해 : <span id="res_jiru">0</span>원</div>
-        <div class="report-line">마약 : <span id="res_mayak">0</span>원</div>
+        <div class="copy-hint">복붙 해서 쓰세용(바다님이 해달라고 갈굼 ㅠㅠ)</div>
+        <div class="report-line" id="res_rivet"></div>
+        <div class="report-line" id="res_junho"></div>
+        <div class="report-line" id="res_jiru"></div>
+        <div class="report-line" id="res_mayak"></div>
     </div>
 </div>
 
@@ -94,10 +107,10 @@
         const totalJiru = getSellerTotal('card_jiru');
         const totalMayak = getSellerTotal('card_mayak');
 
-        document.getElementById('res_rivet').innerText = totalRivet.toLocaleString();
-        document.getElementById('res_junho').innerText = totalJunho.toLocaleString();
-        document.getElementById('res_jiru').innerText = totalJiru.toLocaleString();
-        document.getElementById('res_mayak').innerText = totalMayak.toLocaleString();
+        document.getElementById('res_rivet').innerText = `/pay RIVET00 ${totalRivet}`;
+        document.getElementById('res_junho').innerText = `/pay Junho135 ${totalJunho}`;
+        document.getElementById('res_jiru').innerText = `/pay JiRuHea ${totalJiru}`;
+        document.getElementById('res_mayak').innerText = `/pay gaemju ${totalMayak}`;
 
         document.getElementById('final-report').style.display = 'block';
     }
@@ -105,6 +118,3 @@
 
 </body>
 </html>
-
-
-
