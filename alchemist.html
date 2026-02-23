@@ -26,10 +26,10 @@
 <body>
 
 <div class="container">
-    <h2>암시장</h2>
+    <h2>암시장 계산기</h2>
 
     <div class="seller-grid">
-        <div class="seller-card" id="card_rivet">
+        <div class="seller-card" id="card_gaemju">
             <div class="seller-name">gaemju(마약)</div>
             <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
             <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
@@ -37,7 +37,7 @@
             <div class="item-row"><label>해삼 (82,800)</label><input type="number" class="haesam" value="0" min="0"></div>
         </div>
 
-        <div class="seller-card" id="card_junho">
+        <div class="seller-card" id="card_jiruhea">
             <div class="seller-name">JiRuHea(홍따)</div>
             <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
             <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
@@ -45,7 +45,7 @@
             <div class="item-row"><label>해삼 (82,800)</label><input type="number" class="haesam" value="0" min="0"></div>
         </div>
 
-        <div class="seller-card" id="card_jiru">
+        <div class="seller-card" id="card_ljyong">
             <div class="seller-name">LJYUONG(시바견)</div>
             <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
             <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
@@ -53,7 +53,7 @@
             <div class="item-row"><label>해삼 (82,800)</label><input type="number" class="haesam" value="0" min="0"></div>
         </div>
 
-        <div class="seller-card" id="card_mayak">
+        <div class="seller-card" id="card_goddnd">
             <div class="seller-name">Goddnd(반숙)</div>
             <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
             <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
@@ -67,9 +67,9 @@
     </div>
 
     <div id="final-report">
-        <div class="report-line" id="res_mayak"></div>
-        <div class="report-line" id="res_jiru"></div>
-        <div class="report-line" id="res_ljy"></div>
+        <div class="report-line" id="res_gaemju"></div>
+        <div class="report-line" id="res_jiruhea"></div>
+        <div class="report-line" id="res_ljyong"></div>
         <div class="report-line" id="res_goddnd"></div>
     </div>
 </div>
@@ -88,15 +88,17 @@
     }
 
     function calculateAll() {
-        const totalRivet = getSellerTotal('card_mayak');
-        const totalJunho = getSellerTotal('card_jiru');
-        const totalJiru = getSellerTotal('card_ljy');
-        const totalMayak = getSellerTotal('card_goddnd');
+       
+        const totalGaemju = getSellerTotal('card_gaemju');
+        const totalJiruhea = getSellerTotal('card_jiruhea');
+        const totalLjyong = getSellerTotal('card_ljyong');
+        const totalGoddnd = getSellerTotal('card_goddnd');
 
-        document.getElementById('res_rivet').innerText = `/pay gaemju ${totalRivet}`;
-        document.getElementById('res_junho').innerText = `/pay JiRuHea ${totalJunho}`;
-        document.getElementById('res_jiru').innerText = `/pay LJYUONG ${totalJiru}`;
-        document.getElementById('res_mayak').innerText = `/pay Goddnd ${totalMayak}`;
+        
+        document.getElementById('res_gaemju').innerText = `/pay gaemju ${totalGaemju.toLocaleString()}`;
+        document.getElementById('res_jiruhea').innerText = `/pay JiRuHea ${totalJiruhea.toLocaleString()}`;
+        document.getElementById('res_ljyong').innerText = `/pay LJYUONG ${totalLjyong.toLocaleString()}`;
+        document.getElementById('res_goddnd').innerText = `/pay Goddnd ${totalGoddnd.toLocaleString()}`;
 
         document.getElementById('final-report').style.display = 'block';
     }
@@ -104,4 +106,3 @@
 
 </body>
 </html>
-
