@@ -30,7 +30,7 @@
 
     <div class="seller-grid">
         <div class="seller-card" id="card_rivet">
-            <div class="seller-name">RIVET00(용왕)</div>
+            <div class="seller-name">gaemju(마약)</div>
             <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
             <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
             <div class="item-row"><label>멍게 (19,800)</label><input type="number" class="meongge" value="0" min="0"></div>
@@ -38,14 +38,6 @@
         </div>
 
         <div class="seller-card" id="card_junho">
-            <div class="seller-name">Junho135(공쥬)</div>
-            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
-            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
-            <div class="item-row"><label>멍게 (19,800)</label><input type="number" class="meongge" value="0" min="0"></div>
-            <div class="item-row"><label>해삼 (82,800)</label><input type="number" class="haesam" value="0" min="0"></div>
-        </div>
-
-        <div class="seller-card" id="card_jiru">
             <div class="seller-name">JiRuHea(홍따)</div>
             <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
             <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
@@ -53,8 +45,16 @@
             <div class="item-row"><label>해삼 (82,800)</label><input type="number" class="haesam" value="0" min="0"></div>
         </div>
 
+        <div class="seller-card" id="card_jiru">
+            <div class="seller-name">LJYUONG(시바견)</div>
+            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
+            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
+            <div class="item-row"><label>멍게 (19,800)</label><input type="number" class="meongge" value="0" min="0"></div>
+            <div class="item-row"><label>해삼 (82,800)</label><input type="number" class="haesam" value="0" min="0"></div>
+        </div>
+
         <div class="seller-card" id="card_mayak">
-            <div class="seller-name">gaemju(마약)</div>
+            <div class="seller-name">Goddnd(반숙)</div>
             <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
             <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
             <div class="item-row"><label>멍게 (19,800)</label><input type="number" class="meongge" value="0" min="0"></div>
@@ -67,10 +67,10 @@
     </div>
 
     <div id="final-report">
-        <div class="report-line" id="res_rivet"></div>
-        <div class="report-line" id="res_junho"></div>
-        <div class="report-line" id="res_jiru"></div>
         <div class="report-line" id="res_mayak"></div>
+        <div class="report-line" id="res_jiru"></div>
+        <div class="report-line" id="res_ljy"></div>
+        <div class="report-line" id="res_goddnd"></div>
     </div>
 </div>
 
@@ -88,15 +88,15 @@
     }
 
     function calculateAll() {
-        const totalRivet = getSellerTotal('card_rivet');
-        const totalJunho = getSellerTotal('card_junho');
-        const totalJiru = getSellerTotal('card_jiru');
-        const totalMayak = getSellerTotal('card_mayak');
+        const totalRivet = getSellerTotal('card_mayak');
+        const totalJunho = getSellerTotal('card_jiru');
+        const totalJiru = getSellerTotal('card_ljy');
+        const totalMayak = getSellerTotal('card_goddnd');
 
-        document.getElementById('res_rivet').innerText = `/pay RIVET00 ${totalRivet}`;
-        document.getElementById('res_junho').innerText = `/pay Junho135 ${totalJunho}`;
-        document.getElementById('res_jiru').innerText = `/pay JiRuHea ${totalJiru}`;
-        document.getElementById('res_mayak').innerText = `/pay gaemju ${totalMayak}`;
+        document.getElementById('res_rivet').innerText = `/pay gaemju ${totalRivet}`;
+        document.getElementById('res_junho').innerText = `/pay JiRuHea ${totalJunho}`;
+        document.getElementById('res_jiru').innerText = `/pay LJYUONG ${totalJiru}`;
+        document.getElementById('res_mayak').innerText = `/pay Goddnd ${totalMayak}`;
 
         document.getElementById('final-report').style.display = 'block';
     }
@@ -104,3 +104,4 @@
 
 </body>
 </html>
+
