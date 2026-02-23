@@ -20,8 +20,7 @@
         button { padding: 15px 50px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         button:hover { background-color: #218838; }
         #final-report { margin-top: 30px; padding: 20px; background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; display: none; }
-        .report-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #333; }
-        .report-line span { color: #d9534f; }
+        .report-line { margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -30,29 +29,29 @@
     <h2>내수시장(요리사)</h2>
 
     <div class="seller-grid">
-        <div class="seller-card" id="card_rivet">
-            <div class="seller-name">용왕</div>
+        <div class="seller-card" id="card_gaemju">
+            <div class="seller-name">gaemju(마약)</div>
             <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0" min="0"></div>
             <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
             <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0" min="0"></div>
         </div>
 
-        <div class="seller-card" id="card_junho">
-            <div class="seller-name">공쥬</div>
+        <div class="seller-card" id="card_jiruhea">
+            <div class="seller-name">JiRuHea(홍따)</div>
             <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0" min="0"></div>
             <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
             <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0" min="0"></div>
         </div>
 
-        <div class="seller-card" id="card_jiru">
-            <div class="seller-name">지루해</div>
+        <div class="seller-card" id="card_ljyong">
+            <div class="seller-name">LJYUONG(시바견)</div>
             <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0" min="0"></div>
             <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
             <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0" min="0"></div>
         </div>
 
-        <div class="seller-card" id="card_mayak">
-            <div class="seller-name">마약</div>
+        <div class="seller-card" id="card_goddnd">
+            <div class="seller-name">Goddnd(반숙)</div>
             <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0" min="0"></div>
             <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
             <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0" min="0"></div>
@@ -64,10 +63,10 @@
     </div>
 
     <div id="final-report">
-        <div class="report-line">용왕 : <span id="res_rivet">0</span>원</div>
-        <div class="report-line">공쥬 : <span id="res_junho">0</span>원</div>
-        <div class="report-line">지루해 : <span id="res_jiru">0</span>원</div>
-        <div class="report-line">마약 : <span id="res_mayak">0</span>원</div>
+        <div class="report-line" id="res_gaemju"></div>
+        <div class="report-line" id="res_jiruhea"></div>
+        <div class="report-line" id="res_ljyong"></div>
+        <div class="report-line" id="res_goddnd"></div>
     </div>
 </div>
 
@@ -84,15 +83,15 @@
     }
 
     function calculateAll() {
-        const totalRivet = getSellerTotal('card_rivet');
-        const totalJunho = getSellerTotal('card_junho');
-        const totalJiru = getSellerTotal('card_jiru');
-        const totalMayak = getSellerTotal('card_mayak');
+        const totalGaemju = getSellerTotal('card_gaemju');
+        const totalJiruhea = getSellerTotal('card_jiruhea');
+        const totalLjyong = getSellerTotal('card_ljyong');
+        const totalGoddnd = getSellerTotal('card_goddnd');
 
-        document.getElementById('res_rivet').innerText = totalRivet.toLocaleString();
-        document.getElementById('res_junho').innerText = totalJunho.toLocaleString();
-        document.getElementById('res_jiru').innerText = totalJiru.toLocaleString();
-        document.getElementById('res_mayak').innerText = totalMayak.toLocaleString();
+        document.getElementById('res_gaemju').innerText = `/pay gaemju ${totalGaemju.toLocaleString()}`;
+        document.getElementById('res_jiruhea').innerText = `/pay JiRuHea ${totalJiruhea.toLocaleString()}`;
+        document.getElementById('res_ljyong').innerText = `/pay LJYUONG ${totalLjyong.toLocaleString()}`;
+        document.getElementById('res_goddnd').innerText = `/pay Goddnd ${totalGoddnd.toLocaleString()}`;
 
         document.getElementById('final-report').style.display = 'block';
     }
