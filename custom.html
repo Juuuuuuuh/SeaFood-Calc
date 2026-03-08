@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>농협</title>
+    <title>농협 정산 시스템</title>
     <style>
         body { font-family: 'Pretendard', sans-serif; background-color: #f0f2f5; padding: 20px; padding-bottom: 180px; }
         .container { max-width: 1000px; margin: 0 auto; }
         h2 { text-align: center; color: #222; margin-bottom: 20px; }
 
-  
         .sticky-summary {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: #212529; color: white; padding: 15px;
@@ -22,29 +21,30 @@
         }
         .command-box strong { color: #adb5bd; font-size: 12px; margin-right: 5px; }
         .command-text { color: #ffc107; font-family: 'Courier New', monospace; font-weight: bold; font-size: 13px; }
-        .copy-btn { background: #495057; color: #fff; border: none; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; margin-left: 5px; }
+        .copy-btn { background: #495057; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
         .copy-btn:hover { background: #28a745; }
 
         .seller-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 25px; margin-bottom: 20px; }
-        .seller-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #ddd; }
+        .seller-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #ddd; position: relative; }
         .seller-name { font-size: 18px; font-weight: bold; color: #28a745; margin-bottom: 12px; border-bottom: 2px solid #28a745; display: inline-block; }
-        .game-id { font-size: 12px; color: #888; margin-left: 8px; font-weight: normal; }
+        
+        .card-total { position: absolute; top: 20px; right: 20px; font-size: 14px; color: #dc3545; font-weight: bold; }
 
         .tier-title { font-size: 13px; color: #555; font-weight: bold; margin: 15px 0 8px; padding-left: 8px; border-left: 4px solid #28a745; background: #f8f9fa; padding: 5px 8px; }
 
-   
         .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .t1-grid { grid-template-columns: repeat(3, 1fr); } 
 
         .item-row { display: flex; flex-direction: column; background: #fff; padding: 8px; border: 1px solid #eee; border-radius: 6px; }
         .item-row label { font-size: 11px; color: #666; margin-bottom: 4px; font-weight: bold; }
-        .item-row input { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; text-align: right; box-sizing: border-box; }
+        .item-row input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; text-align: right; box-sizing: border-box; font-size: 15px; }
+        .item-row input:focus { border-color: #28a745; outline: none; background: #fafffa; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>농협</h2>
+    <h2>🌾 농협 정산기</h2>
 
     <div class="seller-list" id="main-list">
         <script>
@@ -55,60 +55,51 @@
                 { id: 'mingbu', name: '밍부', gameId: 'euidan', t3: '콩', t2: '딸기', t1: '토마토' }
             ];
 
-            let html = '';
             sellers.forEach(s => {
-                html += `
+                document.write(`
                 <div class="seller-card" id="card_${s.id}">
-                    <div class="seller-name">${s.name} <span class="game-id">(${s.gameId})</span></div>
+                    <div class="seller-name">${s.name} <span style="font-size:12px; color:#999; font-weight:normal;">(${s.gameId})</span></div>
+                    <div class="card-total" id="card_sum_display_${s.id}">0원</div>
 
                     <div class="tier-title">3티어 & 2티어</div>
                     <div class="grid-inputs">
-                        <div class="item-row"><label>3티어 (${s.t3})</label><input type="number" class="t3" oninput="calc()" value="0" min="0"></div>
-                        <div class="item-row"><label>2티어 (${s.t2})</label><input type="number" class="t2" oninput="calc()" value="0" min="0"></div>
+                        <div class="item-row"><label>3티어 (${s.t3})</label><input type="number" class="val-t3" oninput="calc()" value="0" min="0"></div>
+                        <div class="item-row"><label>2티어 (${s.t2})</label><input type="number" class="val-t2" oninput="calc()" value="0" min="0"></div>
                     </div>
 
                     <div class="tier-title">1티어 - ${s.t1}</div>
                     <div class="grid-inputs t1-grid">
-                        <div class="item-row"><label>상자 (28333)</label><input type="number" class="t1_box" oninput="calc()" value="0" min="0"></div>
-                        <div class="item-row"><label>셜커(세트) (85000)</label><input type="number" class="t1_shulker_set" oninput="calc()" value="0" min="0"></div>
-                        <div class="item-row"><label>셜커(상자) (765000)</label><input type="number" class="t1_shulker_box" oninput="calc()" value="0" min="0"></div>
+                        <div class="item-row"><label>상자 (28,333)</label><input type="number" class="val-t1-box" oninput="calc()" value="0" min="0"></div>
+                        <div class="item-row"><label>셜커-세트 (8.5만)</label><input type="number" class="val-t1-set" oninput="calc()" value="0" min="0"></div>
+                        <div class="item-row"><label>셜커-상자 (76.5만)</label><input type="number" class="val-t1-shulker" oninput="calc()" value="0" min="0"></div>
                     </div>
-                </div>`;
+                </div>`);
             });
-            document.write(html);
         </script>
     </div>
 </div>
 
 <div class="sticky-summary">
     <div class="command-box">
-        <div><strong>러비</strong><span class="command-text" id="sum_luby">/pay zoos2 0</span></div>
-        <button class="copy-btn" onclick="copyCmd('sum_luby')">복사</button>
+        <div><strong>러비</strong><span class="command-text" id="pay_luby">/pay zoos2 0</span></div>
+        <button class="copy-btn" onclick="copyCmd('pay_luby')">복사</button>
     </div>
     <div class="command-box">
-        <div><strong>츄</strong><span class="command-text" id="sum_chu">/pay chu_24 0</span></div>
-        <button class="copy-btn" onclick="copyCmd('sum_chu')">복사</button>
+        <div><strong>츄</strong><span class="command-text" id="pay_chu">/pay chu_24 0</span></div>
+        <button class="copy-btn" onclick="copyCmd('pay_chu')">복사</button>
     </div>
     <div class="command-box">
-        <div><strong>윰윰</strong><span class="command-text" id="sum_yumyum">/pay youm_ 0</span></div>
-        <button class="copy-btn" onclick="copyCmd('sum_yumyum')">복사</button>
+        <div><strong>윰윰</strong><span class="command-text" id="pay_yumyum">/pay youm_ 0</span></div>
+        <button class="copy-btn" onclick="copyCmd('pay_yumyum')">복사</button>
     </div>
     <div class="command-box">
-        <div><strong>밍부</strong><span class="command-text" id="sum_mingbu">/pay euidan 0</span></div>
-        <button class="copy-btn" onclick="copyCmd('sum_mingbu')">복사</button>
+        <div><strong>밍부</strong><span class="command-text" id="pay_mingbu">/pay euidan 0</span></div>
+        <button class="copy-btn" onclick="copyCmd('pay_mingbu')">복사</button>
     </div>
 </div>
 
 <script>
     function calc() {
-        const prices = {
-            't3': 10000,
-            't2': 16000,
-            't1_box': 28333,
-            't1_shulker_set': 85000,
-            't1_shulker_box': 765000
-        };
-
         const config = [
             { id: 'luby', nick: 'zoos2' },
             { id: 'chu', nick: 'chu_24' },
@@ -118,30 +109,32 @@
 
         config.forEach(seller => {
             const card = document.getElementById('card_' + seller.id);
-            let total = 0;
+            
+            const t3 = parseInt(card.querySelector('.val-t3').value) || 0;
+            const t2 = parseInt(card.querySelector('.val-t2').value) || 0;
+            const t1Box = parseInt(card.querySelector('.val-t1-box').value) || 0;
+            const t1Set = parseInt(card.querySelector('.val-t1-set').value) || 0;
+            const t1Shulker = parseInt(card.querySelector('.val-t1-shulker').value) || 0;
 
-        
-            for (const [cls, price] of Object.entries(prices)) {
-                const inputs = card.getElementsByClassName(cls);
-                for (let input of inputs) {
-                    const val = parseInt(input.value) || 0;
-                    total += val * price;
-                }
-            }
+            const total = (t3 * 10000) + 
+                          (t2 * 16000) + 
+                          (t1Box * 28333) + 
+                          (t1Set * 85000) + 
+                          (t1Shulker * 765000);
 
-            document.getElementById('sum_' + seller.id).innerText = `/pay ${seller.nick} ${Math.floor(total)}`;
+            document.getElementById('card_sum_display_' + seller.id).innerText = total.toLocaleString() + '원';
+            document.getElementById('pay_' + seller.id).innerText = `/pay ${seller.nick} ${Math.floor(total)}`;
         });
     }
 
     function copyCmd(id) {
         const text = document.getElementById(id).innerText;
         navigator.clipboard.writeText(text).then(() => {
-            alert('복사되었습니다: ' + text);
+            alert('복사됨: ' + text);
         });
     }
 
-  
-    calc();
+    window.onload = calc;
 </script>
 
 </body>
