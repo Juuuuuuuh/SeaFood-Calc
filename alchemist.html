@@ -20,7 +20,8 @@
         button { padding: 15px 50px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         button:hover { background-color: #218838; }
         #final-report { margin-top: 30px; padding: 20px; background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; display: none; }
-        .report-line { margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .report-line { margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; cursor: pointer; }
+        .report-line:hover { color: #007bff; }
     </style>
 </head>
 <body>
@@ -88,22 +89,31 @@
     }
 
     function calculateAll() {
-       
-        const totalGaemju = getSellerTotal('card_gaemju');
-        const totalJiruhea = getSellerTotal('card_jiruhea');
-        const totalLjyong = getSellerTotal('card_ljyong');
-        const totalGoddnd = getSellerTotal('card_goddnd');
+        const results = [
+            { id: 'res_gaemju', name: 'gaemju', total: getSellerTotal('card_gaemju') },
+            { id: 'res_jiruhea', name: 'JiRuHea', total: getSellerTotal('card_jiruhea') },
+            { id: 'res_ljyong', name: 'LJYUONG', total: getSellerTotal('card_ljyong') },
+            { id: 'res_goddnd', name: 'Goddnd', total: getSellerTotal('card_goddnd') }
+        ];
 
-        
-        document.getElementById('res_gaemju').innerText = `/pay gaemju ${totalGaemju.toLocaleString()}`;
-        document.getElementById('res_jiruhea').innerText = `/pay JiRuHea ${totalJiruhea.toLocaleString()}`;
-        document.getElementById('res_ljyong').innerText = `/pay LJYUONG ${totalLjyong.toLocaleString()}`;
-        document.getElementById('res_goddnd').innerText = `/pay Goddnd ${totalGoddnd.toLocaleString()}`;
+        let hasData = false;
 
-        document.getElementById('final-report').style.display = 'block';
+        results.forEach(res => {
+            const el = document.getElementById(res.id);
+            if (res.total > 0) {
+            
+                el.innerText = `/pay ${res.name} ${res.total}`;
+                el.style.display = 'block';
+                hasData = true;
+            } else {
+                el.style.display = 'none';
+            }
+        });
+
+        document.getElementById('final-report').style.display = hasData ? 'block' : 'none';
+        if (!hasData) alert('수량을 입력해주세요.');
     }
 </script>
 
 </body>
 </html>
-
