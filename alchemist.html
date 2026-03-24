@@ -15,13 +15,16 @@
         .item-row { display: flex; align-items: center; margin-bottom: 10px; }
         .item-row label { flex: 2.5; font-size: 13px; color: #555; font-weight: 500; }
         .item-row input { flex: 1; width: 60px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; text-align: right; }
-        .item-row input:focus { outline: none; border-color: #007bff; box-shadow: 0 0 5px rgba(0,123,255,0.2); }
         .controls { text-align: center; margin-top: 20px; }
-        button { padding: 15px 50px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        button:hover { background-color: #218838; }
+        .btn-submit { padding: 15px 50px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
         #final-report { margin-top: 30px; padding: 20px; background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; display: none; }
-        .report-line { margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; cursor: pointer; }
-        .report-line:hover { color: #007bff; }
+        .report-line { 
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px; padding: 10px; background: white; border-radius: 5px; border: 1px solid #ddd;
+            font-size: 16px; font-weight: bold; color: #333;
+        }
+        .btn-copy { padding: 5px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .btn-copy:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
@@ -32,47 +35,43 @@
     <div class="seller-grid">
         <div class="seller-card" id="card_gaemju">
             <div class="seller-name">gaemju(마약)</div>
-            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
-            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
-            <div class="item-row"><label>멍게 (20,700)</label><input type="number" class="meongge" value="0" min="0"></div>
-            <div class="item-row"><label>해삼 (85,500)</label><input type="number" class="haesam" value="0" min="0"></div>
+            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0"></div>
+            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0"></div>
+            <div class="item-row"><label>멍게 (20,700)</label><input type="number" class="meongge" value="0"></div>
+            <div class="item-row"><label>해삼 (85,500)</label><input type="number" class="haesam" value="0"></div>
         </div>
 
         <div class="seller-card" id="card_jiruhea">
             <div class="seller-name">JiRuHea(홍따)</div>
-            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
-            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
-            <div class="item-row"><label>멍게 (20,700)</label><input type="number" class="meongge" value="0" min="0"></div>
-            <div class="item-row"><label>해삼 (85,500)</label><input type="number" class="haesam" value="0" min="0"></div>
+            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0"></div>
+            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0"></div>
+            <div class="item-row"><label>멍게 (20,700)</label><input type="number" class="meongge" value="0"></div>
+            <div class="item-row"><label>해삼 (85,500)</label><input type="number" class="haesam" value="0"></div>
         </div>
 
         <div class="seller-card" id="card_ljyong">
             <div class="seller-name">LJYUONG(시바견)</div>
-            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
-            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
-            <div class="item-row"><label>멍게 (20,700)</label><input type="number" class="meongge" value="0" min="0"></div>
-            <div class="item-row"><label>해삼 (85,500)</label><input type="number" class="haesam" value="0" min="0"></div>
+            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0"></div>
+            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0"></div>
+            <div class="item-row"><label>멍게 (20,700)</label><input type="number" class="meongge" value="0"></div>
+            <div class="item-row"><label>해삼 (85,500)</label><input type="number" class="haesam" value="0"></div>
         </div>
 
         <div class="seller-card" id="card_goddnd">
             <div class="seller-name">Goddnd(반숙)</div>
-            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0" min="0"></div>
-            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0" min="0"></div>
-            <div class="item-row"><label>멍게 (20,700)</label><input type="number" class="meongge" value="0" min="0"></div>
-            <div class="item-row"><label>해삼 (85,500)</label><input type="number" class="haesam" value="0" min="0"></div>
+            <div class="item-row"><label>소라 (9,900)</label><input type="number" class="sora" value="0"></div>
+            <div class="item-row"><label>키조개 (16,200)</label><input type="number" class="kijoge" value="0"></div>
+            <div class="item-row"><label>멍게 (20,700)</label><input type="number" class="meongge" value="0"></div>
+            <div class="item-row"><label>해삼 (85,500)</label><input type="number" class="haesam" value="0"></div>
         </div>
     </div>
 
     <div class="controls">
-        <button onclick="calculateAll()">Submit</button>
+        <button class="btn-submit" onclick="calculateAll()">Submit</button>
     </div>
 
     <div id="final-report">
-        <div class="report-line" id="res_gaemju"></div>
-        <div class="report-line" id="res_jiruhea"></div>
-        <div class="report-line" id="res_ljyong"></div>
-        <div class="report-line" id="res_goddnd"></div>
-    </div>
+        </div>
 </div>
 
 <script>
@@ -80,7 +79,6 @@
 
     function getSellerTotal(cardId) {
         const card = document.getElementById(cardId);
-        if(!card) return 0;
         const s = parseInt(card.querySelector('.sora').value) || 0;
         const k = parseInt(card.querySelector('.kijoge').value) || 0;
         const m = parseInt(card.querySelector('.meongge').value) || 0;
@@ -88,30 +86,47 @@
         return (s * prices.sora) + (k * prices.kijoge) + (m * prices.meongge) + (h * prices.haesam);
     }
 
+    async function copyText(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            alert("복사되었습니다: " + text);
+        } catch (err) {
+            alert("복사 실패했습니다.");
+        }
+    }
+
     function calculateAll() {
-        const results = [
-            { id: 'res_gaemju', name: 'gaemju', total: getSellerTotal('card_gaemju') },
-            { id: 'res_jiruhea', name: 'JiRuHea', total: getSellerTotal('card_jiruhea') },
-            { id: 'res_ljyong', name: 'LJYUONG', total: getSellerTotal('card_ljyong') },
-            { id: 'res_goddnd', name: 'Goddnd', total: getSellerTotal('card_goddnd') }
+        const report = document.getElementById('final-report');
+        report.innerHTML = ''; // 초기화
+        
+        const sellers = [
+            { id: 'card_gaemju', name: 'gaemju' },
+            { id: 'card_jiruhea', name: 'JiRuHea' },
+            { id: 'card_ljyong', name: 'LJYUONG' },
+            { id: 'card_goddnd', name: 'Goddnd' }
         ];
 
         let hasData = false;
 
-        results.forEach(res => {
-            const el = document.getElementById(res.id);
-            if (res.total > 0) {
-            
-                el.innerText = `/pay ${res.name} ${res.total}`;
-                el.style.display = 'block';
+        sellers.forEach(seller => {
+            const total = getSellerTotal(seller.id);
+            if (total > 0) {
+                const command = `/pay ${seller.name} ${total}`;
+                
+                const line = document.createElement('div');
+                line.className = 'report-line';
+                line.innerHTML = `
+                    <span>${command}</span>
+                    <button class="btn-copy" onclick="copyText('${command}')">복사</button>
+                `;
+                
+                report.appendChild(line);
                 hasData = true;
-            } else {
-                el.style.display = 'none';
             }
         });
 
-        document.getElementById('final-report').style.display = hasData ? 'block' : 'none';
-        if (!hasData) alert('수량을 입력해주세요.');
+        report.style.display = hasData ? 'block' : 'none';
+        if (!hasData) alert("수량을 입력해주세요.");
     }
 </script>
 
