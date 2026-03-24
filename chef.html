@@ -88,10 +88,10 @@
         const totalLjyong = getSellerTotal('card_ljyong');
         const totalGoddnd = getSellerTotal('card_goddnd');
 
-        document.getElementById('res_gaemju').innerText = `/pay gaemju ${totalGaemju.toLocaleString()}`;
-        document.getElementById('res_jiruhea').innerText = `/pay JiRuHea ${totalJiruhea.toLocaleString()}`;
-        document.getElementById('res_ljyong').innerText = `/pay LJYUONG ${totalLjyong.toLocaleString()}`;
-        document.getElementById('res_goddnd').innerText = `/pay Goddnd ${totalGoddnd.toLocaleString()}`;
+        document.getElementById('res_gaemju').innerText = `/pay gaemju ${totalGaemju}`;
+        document.getElementById('res_jiruhea').innerText = `/pay JiRuHea ${totalJiruhea}`;
+        document.getElementById('res_ljyong').innerText = `/pay LJYUONG ${totalLjyong}`;
+        document.getElementById('res_goddnd').innerText = `/pay Goddnd ${totalGoddnd}`;
 
         document.getElementById('final-report').style.display = 'block';
     }
