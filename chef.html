@@ -15,12 +15,16 @@
         .item-row { display: flex; align-items: center; margin-bottom: 10px; }
         .item-row label { flex: 2.5; font-size: 13px; color: #555; font-weight: 500; }
         .item-row input { flex: 1; width: 60px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; text-align: right; }
-        .item-row input:focus { outline: none; border-color: #007bff; box-shadow: 0 0 5px rgba(0,123,255,0.2); }
         .controls { text-align: center; margin-top: 20px; }
-        button { padding: 15px 50px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        button:hover { background-color: #218838; }
+        .btn-submit { padding: 15px 50px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
         #final-report { margin-top: 30px; padding: 20px; background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; display: none; }
-        .report-line { margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .report-line { 
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px; padding: 10px; background: white; border-radius: 5px; border: 1px solid #ddd;
+            font-size: 16px; font-weight: bold; color: #333;
+        }
+        .btn-copy { padding: 5px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; width: 70px; transition: 0.2s; }
+        .btn-copy.copied { background-color: #6c757d; }
     </style>
 </head>
 <body>
@@ -31,43 +35,38 @@
     <div class="seller-grid">
         <div class="seller-card" id="card_gaemju">
             <div class="seller-name">gaemju(마약)</div>
-            <div class="item-row"><label>미역 (12600)</label><input type="number" class="miyeok" value="0" min="0"></div>
-            <div class="item-row"><label>전복 (19800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
-            <div class="item-row"><label>홍합 (31500)</label><input type="number" class="honghap" value="0" min="0"></div>
+            <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0"></div>
+            <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0"></div>
+            <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0"></div>
         </div>
 
         <div class="seller-card" id="card_jiruhea">
             <div class="seller-name">JiRuHea(홍따)</div>
-            <div class="item-row"><label>미역 (12600)</label><input type="number" class="miyeok" value="0" min="0"></div>
-            <div class="item-row"><label>전복 (19800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
-            <div class="item-row"><label>홍합 (31500)</label><input type="number" class="honghap" value="0" min="0"></div>
+            <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0"></div>
+            <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0"></div>
+            <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0"></div>
         </div>
 
         <div class="seller-card" id="card_ljyong">
             <div class="seller-name">LJYUONG(시바견)</div>
-            <div class="item-row"><label>미역 (12600)</label><input type="number" class="miyeok" value="0" min="0"></div>
-            <div class="item-row"><label>전복 (19800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
-            <div class="item-row"><label>홍합 (31500)</label><input type="number" class="honghap" value="0" min="0"></div>
+            <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0"></div>
+            <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0"></div>
+            <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0"></div>
         </div>
 
         <div class="seller-card" id="card_goddnd">
             <div class="seller-name">Goddnd(반숙)</div>
-            <div class="item-row"><label>미역 (12600)</label><input type="number" class="miyeok" value="0" min="0"></div>
-            <div class="item-row"><label>전복 (19800)</label><input type="number" class="jeonbok" value="0" min="0"></div>
-            <div class="item-row"><label>홍합 (31500)</label><input type="number" class="honghap" value="0" min="0"></div>
+            <div class="item-row"><label>미역 (12,600)</label><input type="number" class="miyeok" value="0"></div>
+            <div class="item-row"><label>전복 (19,800)</label><input type="number" class="jeonbok" value="0"></div>
+            <div class="item-row"><label>홍합 (31,500)</label><input type="number" class="honghap" value="0"></div>
         </div>
     </div>
 
     <div class="controls">
-        <button onclick="calculateAll()">Submit</button>
+        <button class="btn-submit" onclick="calculateAll()">Submit</button>
     </div>
 
-    <div id="final-report">
-        <div class="report-line" id="res_gaemju"></div>
-        <div class="report-line" id="res_jiruhea"></div>
-        <div class="report-line" id="res_ljyong"></div>
-        <div class="report-line" id="res_goddnd"></div>
-    </div>
+    <div id="final-report"></div>
 </div>
 
 <script>
@@ -75,25 +74,44 @@
 
     function getSellerTotal(cardId) {
         const card = document.getElementById(cardId);
-        if(!card) return 0;
         const m = parseInt(card.querySelector('.miyeok').value) || 0;
         const j = parseInt(card.querySelector('.jeonbok').value) || 0;
         const h = parseInt(card.querySelector('.honghap').value) || 0;
         return (m * prices.miyeok) + (j * prices.jeonbok) + (h * prices.honghap);
     }
 
+    
+
     function calculateAll() {
-        const totalGaemju = getSellerTotal('card_gaemju');
-        const totalJiruhea = getSellerTotal('card_jiruhea');
-        const totalLjyong = getSellerTotal('card_ljyong');
-        const totalGoddnd = getSellerTotal('card_goddnd');
+        const report = document.getElementById('final-report');
+        report.innerHTML = '';
+        
+        const sellers = [
+            { id: 'card_gaemju', name: 'gaemju' },
+            { id: 'card_jiruhea', name: 'JiRuHea' },
+            { id: 'card_ljyong', name: 'LJYUONG' },
+            { id: 'card_goddnd', name: 'Goddnd' }
+        ];
 
-        document.getElementById('res_gaemju').innerText = `/pay gaemju ${totalGaemju}`;
-        document.getElementById('res_jiruhea').innerText = `/pay JiRuHea ${totalJiruhea}`;
-        document.getElementById('res_ljyong').innerText = `/pay LJYUONG ${totalLjyong}`;
-        document.getElementById('res_goddnd').innerText = `/pay Goddnd ${totalGoddnd}`;
+        let hasData = false;
 
-        document.getElementById('final-report').style.display = 'block';
+        sellers.forEach(seller => {
+            const total = getSellerTotal(seller.id);
+            if (total > 0) {
+                const command = `/pay ${seller.name} ${total}`;
+                const line = document.createElement('div');
+                line.className = 'report-line';
+                line.innerHTML = `
+                    <span>${command}</span>
+                    <button class="btn-copy" onclick="copyText(this, '${command}')">복사</button>
+                `;
+                report.appendChild(line);
+                hasData = true;
+            }
+        });
+
+        report.style.display = hasData ? 'block' : 'none';
+        if (!hasData) alert("수량을 입력해주세요.");
     }
 </script>
 
