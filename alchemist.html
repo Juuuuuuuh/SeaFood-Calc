@@ -86,18 +86,11 @@
         return (s * prices.sora) + (k * prices.kijoge) + (m * prices.meongge) + (h * prices.haesam);
     }
 
-    async function copyText(text) {
-        try {
-            await navigator.clipboard.writeText(text);
-            alert("복사되었습니다: " + text);
-        } catch (err) {
-            alert("복사 실패했습니다.");
-        }
-    }
+    
 
     function calculateAll() {
         const report = document.getElementById('final-report');
-        report.innerHTML = ''; // 초기화
+        report.innerHTML = ''; 
         
         const sellers = [
             { id: 'card_gaemju', name: 'gaemju' },
