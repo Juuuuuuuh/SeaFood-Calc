@@ -484,14 +484,24 @@
   }
 
   function stop(i) {
+    const card = document.getElementById(`c-${i}`);
+    const wasFinished = card.classList.contains('finished');
+
     clearInterval(timers[i].id);
     if (timers[i].running && timers[i].endTime) {
       timers[i].time = Math.max(0, Math.round((timers[i].endTime - Date.now()) / 1000));
     }
+
+    if (wasFinished) {
+      // 종료된 타이머를 Stop으로 끄면 원래 설정했던 시간으로 되돌려서 바로 재시작할 수 있게 함
+      timers[i].time = timers[i].total || 0;
+      document.getElementById(`d-${i}`).innerText = new Date(timers[i].time * 1000).toISOString().substr(11, 8);
+    }
+
     timers[i].running = false;
     timers[i].endTime = null;
-    const card = document.getElementById(`c-${i}`);
     card.classList.remove('running', 'finished');
+    updateRing(i, wasFinished && timers[i].total ? 1 : (timers[i].total ? timers[i].time / timers[i].total : 0));
     clearAlarmEffects(i);
     saveState();
   }
