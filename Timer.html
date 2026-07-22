@@ -1,156 +1,529 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timer</title>
-    <style>
-        :root { --bg: #eceff1; --card: #ffffff; --primary: #3f51b5; --warn: #f44336; }
-        body { font-family: sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; width: 100%; max-width: 1200px; }
-        .card { background: var(--card); padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
-        .time { font-size: 2rem; font-weight: bold; margin: 10px 0; font-family: monospace; }
-        .inputs input { width: 45px; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 4px; }
-        .btns { margin-top: 15px; display: flex; gap: 5px; justify-content: center; }
-        button { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; color: white; font-weight: bold; }
-        .start { background: #4caf50; } .stop { background: #ff9800; } .reset { background: #9e9e9e; }
-        .finished { background: #ffebee; animation: blink 1s infinite; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control Timer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15181d;
+    --panel:#1c2028;
+    --panel-border:#2a2f3a;
+    --panel-hole:#12151a;
+    --text:#e7e9ee;
+    --text-dim:#8790a3;
+    --amber:#ffb454;
+    --teal:#5fd9c4;
+    --red:#ff6b6b;
+    --track:#2a2f3a;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(95,217,196,0.05), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(255,180,84,0.06), transparent 40%),
+      var(--bg);
+    background-attachment:fixed;
+    color:var(--text);
+    min-height:100vh;
+    padding:32px 20px 60px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  header{ width:100%; max-width:1240px; margin-bottom:22px; }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    color:var(--teal);
+    text-transform:uppercase;
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'JetBrains Mono',monospace;
+    font-size:1.9rem;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin:0 0 6px;
+  }
+  .sub{ color:var(--text-dim); font-size:0.88rem; margin:0; }
 
+  .toolbar{
+    width:100%;
+    max-width:1240px;
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:var(--radius);
+    padding:16px 20px;
+    margin-bottom:28px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .toolbar-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.75rem;
+    letter-spacing:0.06em;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  input[type="file"]{ color:var(--text-dim); font-size:0.82rem; max-width:220px; }
+  input[type="file"]::file-selector-button{
+    background:var(--track);
+    color:var(--text);
+    border:1px solid var(--panel-border);
+    border-radius:8px;
+    padding:6px 10px;
+    font-family:'Inter',sans-serif;
+    font-size:0.78rem;
+    cursor:pointer;
+    margin-right:8px;
+  }
+  .btn{
+    padding:7px 13px;
+    border:1px solid var(--panel-border);
+    border-radius:8px;
+    cursor:pointer;
+    color:var(--text);
+    font-weight:600;
+    font-size:0.8rem;
+    background:var(--track);
+    transition:background .15s ease, transform .1s ease;
+  }
+  .btn:hover{ background:#33394a; }
+  .btn:active{ transform:scale(0.97); }
+  .sound-name{ font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--amber); }
+  .hint{ color:var(--text-dim); font-size:0.74rem; width:100%; line-height:1.4; }
 
-        .name-input {
-            border: none; border-bottom: 1px solid #ddd; text-align: center;
-            font-weight: bold; font-size: 1rem; width: 80%; margin-bottom: 5px;
-            outline: none;
-        }
-        .name-input:focus { border-bottom: 1px solid var(--primary); }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:16px;
+    width:100%;
+    max-width:1240px;
+  }
 
-        @keyframes blink { 50% { opacity: 0.6; } }
-    </style>
+  .card{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:var(--radius);
+    padding:18px 16px 20px;
+    text-align:center;
+    position:relative;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .card.running{
+    border-color:rgba(255,180,84,0.4);
+    box-shadow:0 0 0 1px rgba(255,180,84,0.08), 0 8px 24px -12px rgba(255,180,84,0.25);
+  }
+  .card.finished{ border-color:rgba(255,107,107,0.55); animation:pulse 1s infinite; }
+  @keyframes pulse{
+    0%,100%{ box-shadow:0 0 0 1px rgba(255,107,107,0.15), 0 0 0 rgba(255,107,107,0.0); }
+    50%{ box-shadow:0 0 0 1px rgba(255,107,107,0.35), 0 0 22px rgba(255,107,107,0.35); }
+  }
+
+  .status-dot{
+    position:absolute; top:14px; right:14px;
+    width:8px; height:8px; border-radius:50%;
+    background:#4a5063;
+  }
+  .card.running .status-dot{ background:var(--amber); box-shadow:0 0 8px var(--amber); }
+  .card.finished .status-dot{ background:var(--red); box-shadow:0 0 8px var(--red); }
+
+  .name-input{
+    background:transparent;
+    border:none;
+    border-bottom:1px solid transparent;
+    text-align:center;
+    font-weight:600;
+    font-size:0.92rem;
+    color:var(--text);
+    width:88%;
+    margin-bottom:14px;
+    outline:none;
+    padding:2px 0 4px;
+    font-family:'Inter',sans-serif;
+  }
+  .name-input:not(:read-only):hover,
+  .name-input:not(:read-only):focus{ border-bottom-color:var(--teal); }
+  .name-input:read-only{ cursor:default; }
+
+  .ring-wrap{ position:relative; width:132px; height:132px; margin:0 auto 14px; }
+  .ring{
+    width:100%; height:100%; border-radius:50%;
+    background: conic-gradient(var(--track) 0 100%);
+    display:flex; align-items:center; justify-content:center;
+    transition: background 0.4s linear;
+  }
+  .ring-inner{
+    width:76%; height:76%; border-radius:50%;
+    background:var(--panel-hole);
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--panel-border);
+  }
+  .time{
+    font-family:'JetBrains Mono',monospace;
+    font-size:1.28rem;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .card.running .time{ color:var(--amber); }
+  .card.finished .time{ color:var(--red); }
+
+  .inputs{ display:flex; gap:6px; justify-content:center; margin-bottom:14px; }
+  .inputs input{
+    width:48px;
+    padding:7px 4px;
+    text-align:center;
+    background:var(--panel-hole);
+    border:1px solid var(--panel-border);
+    border-radius:6px;
+    color:var(--text);
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.85rem;
+  }
+  .inputs input:focus{ outline:none; border-color:var(--teal); }
+  .inputs input::placeholder{ color:var(--text-dim); }
+
+  .btns{ display:flex; gap:6px; justify-content:center; }
+  .btns button{
+    flex:1;
+    padding:8px 0;
+    border:none;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:0.76rem;
+    letter-spacing:0.02em;
+    font-family:'Inter',sans-serif;
+    transition:filter .12s ease, transform .1s ease;
+  }
+  .btns button:active{ transform:scale(0.96); }
+  .start{ background:var(--teal); color:#0d1712; }
+  .stop{ background:var(--amber); color:#1a1305; }
+  .reset{ background:var(--track); color:var(--text); border:1px solid var(--panel-border); }
+  .btns button:hover{ filter:brightness(1.1); }
+</style>
 </head>
 <body>
 
-<h1>Timer</h1>
-<p style="color: #666;">'알림 권한'을 허용해야 정상 작동합니다(반박 안받음).</p>
+<header>
+  <p class="eyebrow">Multi-timer console</p>
+  <h1>Control Timer</h1>
+  <p class="sub">알림 권한을 허용해야 데스크톱 알림이 정상 작동합니다. 창을 닫았다 열어도 설정한 시간과 진행 상황이 그대로 유지돼요.</p>
+</header>
+
+<div class="toolbar">
+  <span class="toolbar-label">🔔 알림음</span>
+  <input type="file" id="soundFile" accept="audio/*">
+  <button class="btn" onclick="resetSound()">기본음으로</button>
+  <span class="sound-name" id="soundName"></span>
+  <span class="hint">브라우저 저장공간(localStorage) 제약상 너무 큰 파일(수 MB 이상)은 저장되지 않을 수 있어요.</span>
+</div>
+
 <div class="grid" id="grid"></div>
 
 <audio id="alarmSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto" loop></audio>
 
 <script>
-    const grid = document.getElementById('grid');
-    const alarmSound = document.getElementById('alarmSound');
-    const timers = [];
-    const activeBlinks = {}; // 제목 깜빡임 관리를 위한 객체
+  const grid = document.getElementById('grid');
+  const alarmSound = document.getElementById('alarmSound');
+  const timers = [];
+  const activeBlinks = {};
+  const NUM_TIMERS = 15;
+  const STATE_KEY = 'timerAppState';
+  const SOUND_KEY = 'timerAppSound';
+  const SOUND_NAME_KEY = 'timerAppSoundName';
+  const DEFAULT_SOUND = "https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3";
 
-    //Alert part
-    if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-        Notification.requestPermission();
+  if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+    Notification.requestPermission();
+  }
+
+  // ---------- 커스텀 알림음 ----------
+  function loadSavedSound() {
+    const saved = localStorage.getItem(SOUND_KEY);
+    const savedName = localStorage.getItem(SOUND_NAME_KEY);
+    if (saved) {
+      alarmSound.src = saved;
+      document.getElementById('soundName').innerText = savedName ? `현재: ${savedName}` : '현재: 커스텀 파일';
+    } else {
+      document.getElementById('soundName').innerText = '현재: 기본음';
     }
+  }
 
-    function createTimer(i) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.id = `c-${i}`;
-        card.innerHTML = `
-                <div><input type="text" class="name-input" id="n-${i}" value="타이머 ${i+1}"></div>
-                <div class="time" id="d-${i}">00:00:00</div>
-                <div class="inputs" id="in-${i}">
-                    <input type="number" id="h-${i}" placeholder="시">
-                    <input type="number" id="m-${i}" placeholder="분">
-                    <input type="number" id="s-${i}" placeholder="초">
-                </div>
-                <div class="btns">
-                    <button class="start" onclick="start(${i})">Start</button>
-                    <button class="stop" onclick="stop(${i})">Stop</button>
-                    <button class="reset" onclick="reset(${i})">Reset</button>
-                </div>
-            `;
-        grid.appendChild(card);
-        timers.push({ time: 0, id: null, running: false });
+  document.getElementById('soundFile').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (evt) {
+      const dataUrl = evt.target.result;
+      try {
+        localStorage.setItem(SOUND_KEY, dataUrl);
+        localStorage.setItem(SOUND_NAME_KEY, file.name);
+        alarmSound.src = dataUrl;
+        document.getElementById('soundName').innerText = `현재: ${file.name}`;
+      } catch (err) {
+        alert('파일이 너무 커서 저장할 수 없어요. 더 작은 파일을 선택해주세요.');
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function resetSound() {
+    localStorage.removeItem(SOUND_KEY);
+    localStorage.removeItem(SOUND_NAME_KEY);
+    alarmSound.src = DEFAULT_SOUND;
+    document.getElementById('soundName').innerText = '현재: 기본음';
+  }
+
+  // ---------- 링(도넛) 진행률 업데이트 ----------
+  function updateRing(i, fraction) {
+    const ring = document.getElementById(`ring-${i}`);
+    if (!ring) return;
+    const pct = Math.max(0, Math.min(1, fraction)) * 100;
+    const card = document.getElementById(`c-${i}`);
+    let color = 'var(--track)';
+    if (card.classList.contains('finished')) color = 'var(--red)';
+    else if (card.classList.contains('running')) color = 'var(--amber)';
+    ring.style.background = `conic-gradient(${color} ${pct}%, var(--track) 0)`;
+  }
+
+  // ---------- 상태 저장 / 복원 ----------
+  function saveState() {
+    const state = timers.map((t, i) => {
+      const nameEl = document.getElementById(`n-${i}`);
+      const cardEl = document.getElementById(`c-${i}`);
+      const hEl = document.getElementById(`h-${i}`);
+      const mEl = document.getElementById(`m-${i}`);
+      const sEl = document.getElementById(`s-${i}`);
+      return {
+        name: nameEl ? nameEl.value : `타이머 ${i + 1}`,
+        time: t.time,
+        total: t.total || 0,
+        running: t.running,
+        endTime: t.endTime || null,
+        finished: cardEl ? cardEl.classList.contains('finished') : false,
+        h: hEl ? hEl.value : '',
+        m: mEl ? mEl.value : '',
+        s: sEl ? sEl.value : ''
+      };
+    });
+    localStorage.setItem(STATE_KEY, JSON.stringify(state));
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
     }
+  }
 
-    function start(i) {
-        if (timers[i].running) return;
-        const h = +document.getElementById(`h-${i}`).value || 0;
-        const m = +document.getElementById(`m-${i}`).value || 0;
-        const s = +document.getElementById(`s-${i}`).value || 0;
-        const name = document.getElementById(`n-${i}`).value; // 이름 가져오기
+  function createTimer(i, saved) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = `c-${i}`;
+    const displayName = saved && saved.name ? saved.name : `타이머 ${i + 1}`;
+    card.innerHTML = `
+      <div class="status-dot"></div>
+      <div><input type="text" class="name-input" id="n-${i}" value="${displayName.replace(/"/g, '&quot;')}"></div>
+      <div class="ring-wrap">
+        <div class="ring" id="ring-${i}">
+          <div class="ring-inner">
+            <div class="time" id="d-${i}">00:00:00</div>
+          </div>
+        </div>
+      </div>
+      <div class="inputs" id="in-${i}">
+        <input type="number" id="h-${i}" placeholder="시" min="0" value="${saved && saved.h ? saved.h : ''}">
+        <input type="number" id="m-${i}" placeholder="분" min="0" value="${saved && saved.m ? saved.m : ''}">
+        <input type="number" id="s-${i}" placeholder="초" min="0" value="${saved && saved.s ? saved.s : ''}">
+      </div>
+      <div class="btns">
+        <button class="start" onclick="start(${i})">Start</button>
+        <button class="stop" onclick="stop(${i})">Stop</button>
+        <button class="reset" onclick="reset(${i})">Reset</button>
+      </div>
+    `;
+    grid.appendChild(card);
+    timers.push({ time: 0, id: null, running: false, endTime: null, total: 0 });
 
-        if (timers[i].time === 0) timers[i].time = h * 3600 + m * 60 + s;
-        if (timers[i].time <= 0) return alert("Time Set");
+    // h/m/s 입력값이 바뀔 때마다 저장 (시작 전 값도 유지)
+    ['h', 'm', 's'].forEach(p => {
+      document.getElementById(`${p}-${i}`).addEventListener('input', saveState);
+    });
 
+    if (!saved) return;
+
+    if (saved.running && saved.endTime) {
+      const remaining = Math.round((saved.endTime - Date.now()) / 1000);
+      timers[i].total = saved.total || remaining;
+      if (remaining > 0) {
+        timers[i].time = remaining;
+        timers[i].endTime = saved.endTime;
         timers[i].running = true;
         document.getElementById(`in-${i}`).style.visibility = 'hidden';
-        document.getElementById(`n-${i}`).readOnly = true; // 시작 시 이름 수정 방지
-
-        timers[i].id = setInterval(() => {
-            timers[i].time--;
-            const timeStr = new Date(timers[i].time * 1000).toISOString().substr(11, 8);
-            document.getElementById(`d-${i}`).innerText = timeStr;
-
-            if (timers[i].time <= 0) {
-                clearInterval(timers[i].id);
-                finish(i, name); // 이름 전달
-            }
-        }, 1000);
-    }
-
-    function finish(i, name) {
-        timers[i].running = false;
-        document.getElementById(`c-${i}`).classList.add('finished');
-
-        // Sound tracking
-        alarmSound.play();
-
-        // Alert system console
-        if (Notification.permission === 'granted') {
-            new Notification(`${name} 종료!`, { body: "Time Out." });
-        }
-
-        // blink part
-        const oldTitle = "Timer";
-        if (activeBlinks[i]) clearInterval(activeBlinks[i]);
-        activeBlinks[i] = setInterval(() => {
-            document.title = document.title === "종료!!!" ? `${name} 종료!` : "종료!!!";
-        }, 500);
-
-
-    }
-
-
-    function clearAlarmEffects(i) {
-
-        if (activeBlinks[i]) {
-            clearInterval(activeBlinks[i]);
-            delete activeBlinks[i];
-        }
-
-
-        const remainingFinished = document.querySelectorAll('.finished').length;
-        if (remainingFinished === 0) {
-            alarmSound.pause();
-            alarmSound.currentTime = 0;
-            document.title = "Timer";
-        }
-    }
-
-    function stop(i) {
-        clearInterval(timers[i].id);
-        timers[i].running = false;
-        document.getElementById(`c-${i}`).classList.remove('finished');
-        clearAlarmEffects(i);
-    }
-
-    function reset(i) {
-        stop(i);
+        document.getElementById(`n-${i}`).readOnly = true;
+        document.getElementById(`d-${i}`).innerText = new Date(remaining * 1000).toISOString().substr(11, 8);
+        card.classList.add('running');
+        updateRing(i, remaining / (timers[i].total || remaining));
+        runInterval(i, displayName);
+      } else {
         timers[i].time = 0;
-        document.getElementById(`d-${i}`).innerText = "00:00:00";
-        document.getElementById(`in-${i}`).style.visibility = 'visible';
-        document.getElementById(`c-${i}`).classList.remove('finished');
-        document.getElementById(`n-${i}`).readOnly = false;
-        clearAlarmEffects(i);
+        document.getElementById(`in-${i}`).style.visibility = 'hidden';
+        document.getElementById(`n-${i}`).readOnly = true;
+        finish(i, displayName);
+      }
+    } else if (saved.finished) {
+      timers[i].time = 0;
+      timers[i].total = saved.total || 0;
+      document.getElementById(`in-${i}`).style.visibility = 'hidden';
+      document.getElementById(`n-${i}`).readOnly = true;
+      document.getElementById(`d-${i}`).innerText = "00:00:00";
+      card.classList.add('finished');
+      updateRing(i, 0);
+      if (activeBlinks[i]) clearInterval(activeBlinks[i]);
+      activeBlinks[i] = setInterval(() => {
+        document.title = document.title === "종료!!!" ? `${displayName} 종료!` : "종료!!!";
+      }, 500);
+    } else if (saved.time > 0) {
+      timers[i].time = saved.time;
+      timers[i].total = saved.total || saved.time;
+      document.getElementById(`in-${i}`).style.visibility = 'hidden';
+      document.getElementById(`n-${i}`).readOnly = true;
+      document.getElementById(`d-${i}`).innerText = new Date(saved.time * 1000).toISOString().substr(11, 8);
+      updateRing(i, saved.time / (timers[i].total || saved.time));
+    }
+    // saved.time === 0 이고 running/finished 아니면: 아직 시작 전 상태. h/m/s 입력값만 복원된 채로 둠 (위 innerHTML에서 처리됨)
+  }
+
+  function runInterval(i, name) {
+    timers[i].id = setInterval(() => {
+      const remaining = Math.round((timers[i].endTime - Date.now()) / 1000);
+      timers[i].time = Math.max(0, remaining);
+      const timeStr = new Date(Math.max(0, remaining) * 1000).toISOString().substr(11, 8);
+      document.getElementById(`d-${i}`).innerText = timeStr;
+      updateRing(i, Math.max(0, remaining) / (timers[i].total || 1));
+
+      if (remaining <= 0) {
+        clearInterval(timers[i].id);
+        finish(i, name);
+      } else {
+        saveState();
+      }
+    }, 1000);
+  }
+
+  function start(i) {
+    if (timers[i].running) return;
+    const h = +document.getElementById(`h-${i}`).value || 0;
+    const m = +document.getElementById(`m-${i}`).value || 0;
+    const s = +document.getElementById(`s-${i}`).value || 0;
+    const name = document.getElementById(`n-${i}`).value;
+
+    if (timers[i].time === 0) timers[i].time = h * 3600 + m * 60 + s;
+    if (timers[i].time <= 0) return alert("시간을 설정해주세요.");
+
+    timers[i].total = timers[i].time;
+    timers[i].running = true;
+    timers[i].endTime = Date.now() + timers[i].time * 1000;
+    document.getElementById(`in-${i}`).style.visibility = 'hidden';
+    document.getElementById(`n-${i}`).readOnly = true;
+    document.getElementById(`c-${i}`).classList.add('running');
+
+    updateRing(i, 1);
+    runInterval(i, name);
+    saveState();
+  }
+
+  function finish(i, name) {
+    timers[i].running = false;
+    timers[i].endTime = null;
+    const card = document.getElementById(`c-${i}`);
+    card.classList.remove('running');
+    card.classList.add('finished');
+    updateRing(i, 0);
+
+    alarmSound.currentTime = 0;
+    alarmSound.play().catch(() => {});
+
+    if (Notification.permission === 'granted') {
+      new Notification(`${name} 종료!`, { body: "Time Out." });
     }
 
-    for (let i = 0; i < 15; i++) createTimer(i);
+    if (activeBlinks[i]) clearInterval(activeBlinks[i]);
+    activeBlinks[i] = setInterval(() => {
+      document.title = document.title === "종료!!!" ? `${name} 종료!` : "종료!!!";
+    }, 500);
+
+    saveState();
+  }
+
+  function clearAlarmEffects(i) {
+    if (activeBlinks[i]) {
+      clearInterval(activeBlinks[i]);
+      delete activeBlinks[i];
+    }
+    const remainingFinished = document.querySelectorAll('.finished').length;
+    if (remainingFinished === 0) {
+      alarmSound.pause();
+      alarmSound.currentTime = 0;
+      document.title = "Timer";
+    }
+  }
+
+  function stop(i) {
+    clearInterval(timers[i].id);
+    if (timers[i].running && timers[i].endTime) {
+      timers[i].time = Math.max(0, Math.round((timers[i].endTime - Date.now()) / 1000));
+    }
+    timers[i].running = false;
+    timers[i].endTime = null;
+    const card = document.getElementById(`c-${i}`);
+    card.classList.remove('running', 'finished');
+    clearAlarmEffects(i);
+    saveState();
+  }
+
+  function reset(i) {
+    stop(i);
+    timers[i].time = 0;
+    timers[i].total = 0;
+    timers[i].endTime = null;
+    document.getElementById(`d-${i}`).innerText = "00:00:00";
+    document.getElementById(`in-${i}`).style.visibility = 'visible';
+    document.getElementById(`h-${i}`).value = '';
+    document.getElementById(`m-${i}`).value = '';
+    document.getElementById(`s-${i}`).value = '';
+    document.getElementById(`c-${i}`).classList.remove('running', 'finished');
+    document.getElementById(`n-${i}`).readOnly = false;
+    updateRing(i, 0);
+    clearAlarmEffects(i);
+    saveState();
+  }
+
+  grid.addEventListener('change', (e) => {
+    if (e.target.classList.contains('name-input')) saveState();
+  });
+
+  // ---------- 초기화 ----------
+  loadSavedSound();
+  const savedState = loadState();
+  for (let i = 0; i < NUM_TIMERS; i++) {
+    createTimer(i, savedState ? savedState[i] : null);
+  }
+  saveState();
 </script>
 </body>
 </html>
